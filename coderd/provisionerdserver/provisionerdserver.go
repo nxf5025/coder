@@ -594,6 +594,11 @@ func (s *server) acquireProtoJob(ctx context.Context, job database.ProvisionerJo
 			})
 		}
 
+		ownerRbacRoles := []string{}
+		for _, role := range owner.RBACRoles {
+			ownerRbacRoles = append(ownerRbacRoles, role)
+		}
+
 		protoJob.Type = &proto.AcquiredJob_WorkspaceBuild_{
 			WorkspaceBuild: &proto.AcquiredJob_WorkspaceBuild{
 				WorkspaceBuildId:      workspaceBuild.ID.String(),
@@ -621,6 +626,7 @@ func (s *server) acquireProtoJob(ctx context.Context, job database.ProvisionerJo
 					WorkspaceOwnerSshPrivateKey:   ownerSSHPrivateKey,
 					WorkspaceBuildId:              workspaceBuild.ID.String(),
 					WorkspaceOwnerLoginType:       string(owner.LoginType),
+					WorkspaceOwnerRbacRoles:       ownerRbacRoles,
 				},
 				LogLevel: input.LogLevel,
 			},

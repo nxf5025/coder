@@ -261,6 +261,7 @@ export interface Metadata {
   workspaceOwnerSshPrivateKey: string;
   workspaceBuildId: string;
   workspaceOwnerLoginType: string;
+  workspaceOwnerRbacRoles: string[];
 }
 
 /** Config represents execution configuration shared by all subsequent requests in the Session */
@@ -865,6 +866,9 @@ export const Metadata = {
     }
     if (message.workspaceOwnerLoginType !== "") {
       writer.uint32(146).string(message.workspaceOwnerLoginType);
+    }
+    for (const v of message.workspaceOwnerRbacRoles) {
+      writer.uint32(154).string(v!);
     }
     return writer;
   },

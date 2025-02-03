@@ -187,7 +187,9 @@ func TestAcquireJob(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), testutil.WaitShort)
 			defer cancel()
 
-			user := dbgen.User(t, db, database.User{})
+			user := dbgen.User(t, db, database.User{
+				RBACRoles: []string{"member"},
+			})
 			group1 := dbgen.Group(t, db, database.Group{
 				Name:           "group1",
 				OrganizationID: pd.OrganizationID,
@@ -376,6 +378,7 @@ func TestAcquireJob(t *testing.T) {
 						WorkspaceOwnerSshPrivateKey:   sshKey.PrivateKey,
 						WorkspaceBuildId:              build.ID.String(),
 						WorkspaceOwnerLoginType:       string(user.LoginType),
+						WorkspaceOwnerRbacRoles:       []string{user.RBACRoles[0]},
 					},
 				},
 			})
